@@ -6,9 +6,10 @@ let character = createCharacter(50, 50, 50, 50);
 let normalPlatform = createPlatform(70, 38, 125, 20, 0, 0, 102);
 let movingPlatform = createPlatform(225, 175, 100, 20, 0, 0, 102);
 let breakingPlatform = createPlatform(26, 270, 100, 20, 0, 0, 102);
+let spike = createSpike(180, 300, 210, 240, 240, 300);
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(700, 400);
 }
 
 // Obstacle / Spike / Death
@@ -45,6 +46,16 @@ function draw() {
   movingPlatform.x -= 10;
   if (movingPlatform.x + movingPlatform.w < 0) {
     movingPlatform.x = 500;
+  }
+
+  spike.draw();
+  spike.x1 -= 10;
+  spike.x2 -= 10;
+  spike.x3 -= 10;
+  if (spike.x1 + spike.x3 < 0) {
+    spike.x1 = 500;
+    spike.x2 = 530;
+    spike.x3 = 560;
   }
 
   if (character.y + character.h < 320) {
