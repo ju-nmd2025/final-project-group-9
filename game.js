@@ -31,8 +31,6 @@ function draw() {
   breakingPlatform.draw();
   movingPlatform.draw();
 
-  createSpike(180, 300, 210, 240, 240, 300).draw();
-
   normalPlatform.x -= 10;
   if (normalPlatform.x + normalPlatform.w < 0) {
     normalPlatform.x = 500;
