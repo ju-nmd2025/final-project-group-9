@@ -40,7 +40,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if (character.y + character.h === 300) {
-    character.y -= 80;
+  if (character.y + character.h === 320) {
+    character.y -= 150;
   }
 }
