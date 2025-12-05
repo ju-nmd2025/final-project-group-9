@@ -6,7 +6,7 @@ let character = new Character(50, 50, 50, 50);
 let normalPlatform = new Platform(70, 38, 125, 20);
 let movingPlatform = new Platform(225, 175, 100, 20);
 let breakingPlatform = new Platform(26, 270, 100, 20);
-let spike = new Spike(180, 300, 210, 240, 240, 300);
+let spike = new Spike(180, 300, 60, 60);
 
 function setup() {
   createCanvas(700, 400);
@@ -47,13 +47,9 @@ function draw() {
   }
 
   spike.draw();
-  spike.x1 -= 10;
-  spike.x2 -= 10;
-  spike.x3 -= 10;
-  if (spike.x1 + spike.x3 < 0) {
-    spike.x1 = 500;
-    spike.x2 = 530;
-    spike.x3 = 560;
+  spike.x -= 10;
+  if (spike.x + spike.w < 0) {
+    spike.x = 500;
   }
 
   if (character.y + character.h < 320) {
@@ -63,7 +59,13 @@ function draw() {
   // Floor
   line(0, 300, 400, 300);
 }
-
+function createspikes(n) {
+  let spikes = [
+    new Spike(180, 300, 210, 240, 240, 300),
+    new Spike(380, 300, 410, 440, 440, 300),
+  ];
+  return spikes;
+}
 function keyPressed() {
   if (character.y + character.h === 320) {
     character.y -= 150;

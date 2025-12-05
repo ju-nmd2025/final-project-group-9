@@ -1,16 +1,33 @@
 export default class Spike {
-  constructor(x1, y1, x2, y2, x3, y3) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-    this.x3 = x3;
-    this.y3 = y3;
+  constructor(x, y, w, h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
   }
   draw() {
     push();
     fill("pink");
-    triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
+    triangle(
+      this.x,
+      this.y,
+      this.x + this.w / 2,
+      this.y - this.h,
+      this.x + this.w,
+      this.y
+    );
     pop();
   }
+  move(gameSpeed) {
+    this.x -= gameSpeed;
+  }
+  /*drawSpikes(spikes, gameSpeed, canvasWidth) {
+    for (let i = 0; i < spikes.length; i++) {
+      spikes[i].draw();
+      spikes[i].move(gameSpeed);
+
+      if (spikes[i].x1 + spikes[i].x3 < 0) {
+      }
+    }
+  }*/
 }
