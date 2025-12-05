@@ -1,12 +1,12 @@
-import { createCharacter } from "./character";
-import { createPlatform } from "./platform";
-import { createSpike } from "./spike";
+import Character from "./character";
+import Platform from "./platform";
+import Spike from "./spike";
 
-let character = createCharacter(50, 50, 50, 50);
-let normalPlatform = createPlatform(70, 38, 125, 20, 0, 0, 102);
-let movingPlatform = createPlatform(225, 175, 100, 20, 0, 0, 102);
-let breakingPlatform = createPlatform(26, 270, 100, 20, 0, 0, 102);
-let spike = createSpike(180, 300, 210, 240, 240, 300);
+let character = new Character(50, 50, 50, 50);
+let normalPlatform = new Platform(70, 38, 125, 20);
+let movingPlatform = new Platform(225, 175, 100, 20);
+let breakingPlatform = new Platform(26, 270, 100, 20);
+let spike = new Spike(180, 300, 210, 240, 240, 300);
 
 function setup() {
   createCanvas(700, 400);
