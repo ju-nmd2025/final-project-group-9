@@ -16,6 +16,7 @@ export default class Platform {
   }
 }
 
+//randomizáció nem működik teljesen, másik issue keretében javitva lesz
 function createPlatforms(n, standardWidth, standardHeight) {
   let platforms = [];
   for (let i = 0; i < n; i++) {
@@ -25,7 +26,7 @@ function createPlatforms(n, standardWidth, standardHeight) {
         200,
         standardHeight - Math.floor(120 * Math.random()),
         platformWidth,
-        8
+        10
       )
     );
   }
@@ -36,6 +37,10 @@ function automatePlatforms(platforms, gameSpeed) {
   for (let i = 0; i < platforms.length; i++) {
     platforms[i].draw();
     platforms[i].move(gameSpeed);
+
+    if (platforms[i].x + platforms[i].w < 0) {
+      platforms[i].x = 700;
+    }
   }
 }
 

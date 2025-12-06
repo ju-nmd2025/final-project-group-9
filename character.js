@@ -12,6 +12,8 @@ export default class Character {
   }
 
   fall() {
-    this.y += 8;
+    if (this.y + this.w <= 320) {
+      this.y += 8;
+    }
   }
 }
