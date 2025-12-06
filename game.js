@@ -25,7 +25,7 @@ let x = 100;
 let y = 100;
 
 function draw() {
-  background(130, 216, 230);
+  background(135, 216, 230);
 
   character.draw();
   normalPlatform.draw();
