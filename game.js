@@ -10,12 +10,13 @@ let spike = new Spike(180, 300, 60, 60);
 
 function setup() {
   createCanvas(700, 400);
+  background("#ADD8E6");
 }
 
 // Obstacle / Spike / Death
 function drawObstacle() {
   push();
-  fill("red");
+  fill("pink");
   triangle(180, 300, 210, 240, 240, 300);
   pop();
 }
@@ -24,7 +25,7 @@ let x = 100;
 let y = 100;
 
 function draw() {
-  background(100, 100, 100);
+  background(130, 216, 230);
 
   character.draw();
   normalPlatform.draw();
@@ -59,13 +60,7 @@ function draw() {
   // Floor
   line(0, 300, 400, 300);
 }
-function createspikes(n) {
-  let spikes = [
-    new Spike(180, 300, 210, 240, 240, 300),
-    new Spike(380, 300, 410, 440, 440, 300),
-  ];
-  return spikes;
-}
+
 function keyPressed() {
   if (character.y + character.h === 320) {
     character.y -= 150;
