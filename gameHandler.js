@@ -15,25 +15,17 @@ export default class GameHandler {
   constructor() {
     this.currentGameState = this.states.start;
     //temporary, amikor meg lesznek a gombok és view-k ki lehet törölni
-    this.initiateGameObjects();
+    this.initializeGameObjects();
   }
 
   #character;
   #platforms = [];
   #spikes = [];
 
-  initiateGameObjects() {
+  initializeGameObjects() {
     this.#character = new Character(50, 50, 50, 50);
 
-    //Másik issuenak a része addig kézzel hozunk létre platformokat
-    //this.#platforms = createPlatforms(4, 70, 300);
-
-    this.#platforms = [
-      new Platform(70, 38, 125, 20),
-      new Platform(225, 175, 100, 20),
-      new Platform(26, 270, 100, 20),
-      new Platform(70, 38, 125, 20),
-    ];
+    this.#platforms = createPlatforms(4, 70, 220, 100);
 
     // Ezzel hozzuk létre a spikeokat, pl. createPlatforms függvény a platform.js-ben.
     // majd az objektum randomizálásnál meg lesz csinálva a spikeban is
@@ -44,7 +36,7 @@ export default class GameHandler {
     //ide se árt majd egy refactor
     this.#character.draw();
     this.#character.fall();
-    automatePlatforms(this.#platforms, 10);
+    automatePlatforms(this.#platforms, 10, 70, 220, 100);
     //temporary solution, majd ha bement a Spike refactor, akkor move method-ot létrehozni a Spike osztályban
     this.#spikes[0].draw();
     this.moveSpike(this.#spikes[0]);
@@ -65,7 +57,11 @@ export default class GameHandler {
 
   characterJump() {
     //ezt még ki kell majd csinositani, ha már fent tudunk maradni a platformokon
-    this.#character.y -= 150;
+    if (this.#character.y - this.#character.h < 0) {
+      this.#character.y = 0;
+    } else {
+      this.#character.y -= 150;
+    }
   }
 
   //temporary

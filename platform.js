@@ -16,16 +16,19 @@ export default class Platform {
   }
 }
 
-//randomizáció nem működik teljesen, másik issue keretében javitva lesz
-function createPlatforms(n, standardWidth, standardHeight) {
-  let platforms = [];
+function createPlatforms(n, standardWidth, standardHeight, standardSpace) {
+  let platforms = [new Platform(140, 200, 125, 10)];
   for (let i = 0; i < n; i++) {
-    let platformWidth = standardWidth + Math.floor(90 * Math.random());
+    let platformStartingPoint = generatePlatformStartingPoint(
+      platforms[i].x,
+      platforms[i].w,
+      standardSpace
+    );
     platforms.push(
       new Platform(
-        200,
+        platformStartingPoint,
         standardHeight - Math.floor(120 * Math.random()),
-        platformWidth,
+        standardWidth + Math.floor(90 * Math.random()),
         10
       )
     );
@@ -33,15 +36,37 @@ function createPlatforms(n, standardWidth, standardHeight) {
   return platforms;
 }
 
-function automatePlatforms(platforms, gameSpeed) {
+function automatePlatforms(
+  platforms,
+  gameSpeed,
+  standardWidth,
+  standardHeight,
+  standardSpace
+) {
   for (let i = 0; i < platforms.length; i++) {
     platforms[i].draw();
     platforms[i].move(gameSpeed);
 
     if (platforms[i].x + platforms[i].w < 0) {
-      platforms[i].x = 700;
+      platforms.splice(i, 1);
+      platforms.push(
+        new Platform(
+          generatePlatformStartingPoint(
+            platforms[platforms.length - 1].x,
+            platforms[platforms.length - 1].w,
+            standardSpace
+          ),
+          standardHeight - Math.floor(120 * Math.random()),
+          standardWidth + Math.floor(90 * Math.random()),
+          10
+        )
+      );
     }
   }
+}
+
+function generatePlatformStartingPoint(x, w, defaultSpace) {
+  return x + w + defaultSpace - Math.floor(20 * Math.random());
 }
 
 export { Platform, createPlatforms, automatePlatforms };
