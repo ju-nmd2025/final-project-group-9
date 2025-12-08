@@ -1,6 +1,7 @@
 import Character from "./character";
 import Platform, { createPlatforms, automatePlatforms } from "./platform";
 import Spike from "./spike";
+import Button from "./buttons";
 
 export default class GameHandler {
   states = {
@@ -10,12 +11,13 @@ export default class GameHandler {
   };
 
   // A buttons objektumba kell létrehozni a gombokat, hasonlóan a states-hez pl. startButton : new Button ()
-  buttons = {};
+  buttons = {
+    startButton: new Button(250, 200, 200, 75, "Start Game"),
+    restartButton: new Button(250, 200, 200, 75, "Restart Game"),
+  };
 
   constructor() {
-    this.currentGameState = this.states.start;
-    //temporary, amikor meg lesznek a gombok és view-k ki lehet törölni
-    this.initializeGameObjects();
+    this.currentGameState = this.states.menu;
   }
 
   #character;
@@ -32,6 +34,10 @@ export default class GameHandler {
     this.#spikes = [new Spike(180, 300, 210, 240, 240, 300)];
   }
 
+  changeGameState(newGameState) {
+    this.currentGameState = newGameState;
+  }
+
   startGame() {
     //ide se árt majd egy refactor
     this.#character.draw();
@@ -43,12 +49,13 @@ export default class GameHandler {
   }
 
   mainMenu() {
-    //uncomment ha meg lesznek a view-k
-    //this.initiateGameObjects();
+    this.initializeGameObjects();
+    this.buttons.startButton.draw();
   }
 
   endGame() {
-    //ha endview és restart gomb meg van akkor itt kell majd implementálni
+    this.initializeGameObjects();
+    this.buttons.restartButton.draw();
   }
 
   collidingWithObjects() {

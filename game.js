@@ -11,7 +11,7 @@ function draw() {
   line(0, 300, 700, 300);
   switch (handler.currentGameState) {
     case handler.states.menu:
-      console.log("Temporary");
+      handler.mainMenu();
       break;
 
     case handler.states.start:
@@ -29,4 +29,20 @@ function draw() {
 
 function keyPressed() {
   handler.characterJump();
+}
+function mousePressed() {
+  switch (handler.currentGameState) {
+    case handler.states.menu:
+      if (handler.buttons.startButton.isMouseOnButton()) {
+        handler.changeGameState(handler.states.start);
+      }
+      break;
+    case handler.states.end:
+      if (handler.buttons.restartButton.isMouseOnButton()) {
+        handler.changeGameState(handler.states.menu);
+      }
+      break;
+    default:
+      console.error("An error has occured.");
+  }
 }
