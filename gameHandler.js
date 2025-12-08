@@ -1,6 +1,6 @@
 import Character from "./character";
 import Platform, { createPlatforms, automatePlatforms } from "./platform";
-import Spike from "./spike";
+import Spike, { automateSpikes } from "./spike";
 import Button from "./buttons";
 
 export default class GameHandler {
@@ -29,9 +29,7 @@ export default class GameHandler {
 
     this.#platforms = createPlatforms(4, 70, 220, 100);
 
-    // Ezzel hozzuk létre a spikeokat, pl. createPlatforms függvény a platform.js-ben.
-    // majd az objektum randomizálásnál meg lesz csinálva a spikeban is
-    this.#spikes = [new Spike(180, 300, 210, 240, 240, 300)];
+    this.#spikes = createSpikes(2, 300);
   }
 
   changeGameState(newGameState) {
@@ -43,9 +41,8 @@ export default class GameHandler {
     this.#character.draw();
     this.#character.fall();
     automatePlatforms(this.#platforms, 10, 70, 220, 100);
-    //temporary solution, majd ha bement a Spike refactor, akkor move method-ot létrehozni a Spike osztályban
-    this.#spikes[0].draw();
-    this.moveSpike(this.#spikes[0]);
+    automateSpikes(this.#spikes, 10, 300);
+    this.collidingWithObjects();
   }
 
   mainMenu() {
@@ -59,7 +56,9 @@ export default class GameHandler {
   }
 
   collidingWithObjects() {
-    //ide kell majd leimplementálni hogy hogyan ütközik a karakterünk az objektumokkal
+    if (this.#character.isColliding(this.#spikes, 10)) {
+      this.changeGameState(this.states.end);
+    }
   }
 
   characterJump() {
@@ -68,18 +67,6 @@ export default class GameHandler {
       this.#character.y = 0;
     } else {
       this.#character.y -= 150;
-    }
-  }
-
-  //temporary
-  moveSpike(spike) {
-    spike.x1 -= 10;
-    spike.x2 -= 10;
-    spike.x3 -= 10;
-    if (spike.x1 + spike.x3 < 0) {
-      spike.x1 = 700;
-      spike.x2 = 730;
-      spike.x3 = 760;
     }
   }
 }
