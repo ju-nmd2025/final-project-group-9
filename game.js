@@ -4,6 +4,7 @@ let handler = new GameHandler();
 
 function setup() {
   createCanvas(700, 400);
+  background("#ADD8E6");
 }
 
 function draw() {
