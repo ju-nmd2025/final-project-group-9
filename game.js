@@ -1,68 +1,49 @@
-import Character from "./character";
-import Platform from "./platform";
-import Spike from "./spike";
+import GameHandler from "./gameHandler";
 
-let character = new Character(50, 50, 50, 50);
-let normalPlatform = new Platform(70, 38, 125, 20);
-let movingPlatform = new Platform(225, 175, 100, 20);
-let breakingPlatform = new Platform(26, 270, 100, 20);
-let spike = new Spike(180, 300, 60, 60);
+let handler = new GameHandler();
 
 function setup() {
   createCanvas(700, 400);
   background("#ADD8E6");
 }
 
-// Obstacle / Spike / Death
-function drawObstacle() {
-  push();
-  fill("pink");
-  triangle(180, 300, 210, 240, 240, 300);
-  pop();
-}
-
-let x = 100;
-let y = 100;
-
 function draw() {
-  background(135, 216, 230);
+  background(100, 100, 100);
+  line(0, 300, 700, 300);
+  switch (handler.currentGameState) {
+    case handler.states.menu:
+      handler.mainMenu();
+      break;
 
-  character.draw();
-  normalPlatform.draw();
-  breakingPlatform.draw();
-  movingPlatform.draw();
+    case handler.states.start:
+      handler.startGame();
+      break;
 
-  normalPlatform.x -= 10;
-  if (normalPlatform.x + normalPlatform.w < 0) {
-    normalPlatform.x = 500;
+    case handler.states.end:
+      console.log("Temporary");
+      break;
+
+    default:
+      console.error("An error has occured.");
   }
-
-  breakingPlatform.x -= 10;
-  if (breakingPlatform.x + breakingPlatform.w < 0) {
-    breakingPlatform.x = 500;
-  }
-
-  movingPlatform.x -= 10;
-  if (movingPlatform.x + movingPlatform.w < 0) {
-    movingPlatform.x = 500;
-  }
-
-  spike.draw();
-  spike.x -= 10;
-  if (spike.x + spike.w < 0) {
-    spike.x = 500;
-  }
-
-  if (character.y + character.h < 320) {
-    character.y += 10;
-  }
-
-  // Floor
-  line(0, 300, 400, 300);
 }
 
 function keyPressed() {
-  if (character.y + character.h === 320) {
-    character.y -= 150;
+  handler.characterJump();
+}
+function mousePressed() {
+  switch (handler.currentGameState) {
+    case handler.states.menu:
+      if (handler.buttons.startButton.isMouseOnButton()) {
+        handler.changeGameState(handler.states.start);
+      }
+      break;
+    case handler.states.end:
+      if (handler.buttons.restartButton.isMouseOnButton()) {
+        handler.changeGameState(handler.states.menu);
+      }
+      break;
+    default:
+      console.error("An error has occured.");
   }
 }

@@ -10,4 +10,10 @@ export default class Character {
     noStroke();
     ellipse(this.x, this.y, this.w, this.h);
   }
+
+  fall() {
+    if (this.y + this.w <= 320) {
+      this.y += 8;
+    }
+  }
 }
