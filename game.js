@@ -4,11 +4,10 @@ let handler = new GameHandler();
 
 function setup() {
   createCanvas(700, 400);
-  background("#ADD8E6");
 }
 
 function draw() {
-  background(100, 100, 100);
+  background(135, 216, 230);
   line(0, 300, 700, 300);
   switch (handler.currentGameState) {
     case handler.states.menu:
@@ -20,7 +19,7 @@ function draw() {
       break;
 
     case handler.states.end:
-      console.log("Temporary");
+      handler.endGame();
       break;
 
     default:
