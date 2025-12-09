@@ -1,6 +1,6 @@
 import Character from "./character";
-import Platform, { createPlatforms, automatePlatforms } from "./platform";
-import Spike, { automateSpikes } from "./spike";
+import { createPlatforms, automatePlatforms } from "./platform";
+import { automateSpikes } from "./spike";
 import Button from "./buttons";
 
 export default class GameHandler {
@@ -10,7 +10,6 @@ export default class GameHandler {
     end: "End",
   };
 
-  // A buttons objektumba kell létrehozni a gombokat, hasonlóan a states-hez pl. startButton : new Button ()
   buttons = {
     startButton: new Button(250, 200, 200, 75, "Start Game"),
     restartButton: new Button(250, 200, 200, 75, "Restart Game"),
@@ -18,6 +17,7 @@ export default class GameHandler {
 
   constructor() {
     this.currentGameState = this.states.menu;
+    this.gameSpeed = 5;
   }
 
   #character;
@@ -37,11 +37,9 @@ export default class GameHandler {
   }
 
   startGame() {
-    //ide se árt majd egy refactor
     this.#character.draw();
-    this.#character.fall();
-    automatePlatforms(this.#platforms, 10, 70, 220, 100);
-    automateSpikes(this.#spikes, 10, 300);
+    automatePlatforms(this.#platforms, this.gameSpeed, 70, 220, 100);
+    automateSpikes(this.#spikes, this.gameSpeed, 300);
     this.collidingWithObjects();
   }
 
@@ -53,11 +51,15 @@ export default class GameHandler {
   endGame() {
     this.initializeGameObjects();
     this.buttons.restartButton.draw();
+    text("You died :(", 250, 110, 200, 75);
   }
 
   collidingWithObjects() {
-    if (this.#character.isColliding(this.#spikes, 10)) {
+    if (this.#character.isHittingASpike(this.#spikes)) {
       this.changeGameState(this.states.end);
+    }
+    if (!this.#character.isCollidingWithPlatforms(this.#platforms)) {
+      this.#character.fall();
     }
   }
 
