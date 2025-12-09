@@ -14,17 +14,31 @@ export default class Character {
   }
 
   fall() {
-    if (this.y + this.w <= 320) {
+    if (this.y + this.w / 2 <= 300) {
       this.y += 8;
     }
   }
 
-  isColliding(objects, gameSpeed) {
-    for (const object of objects) {
+  isCollidingWithPlatforms(platforms) {
+    for (const platform of platforms) {
       if (
-        this.x + this.w > object.x &&
-        this.x + this.w < object.x + object.w &&
-        this.y + this.h > object.y - object.h
+        this.x + this.w / 2 >= platform.x &&
+        this.x - this.w / 2 <= platform.x + platform.w &&
+        this.y + this.h / 2 <= platform.y - platform.h &&
+        this.y + this.h / 2 >= platform.y - platform.h - 10
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isHittingASpike(spikes) {
+    for (const spike of spikes) {
+      if (
+        this.x + this.w / 2 > spike.x &&
+        this.x - this.w / 2 < spike.x + spike.w &&
+        this.y + this.h / 2 > spike.y - spike.h
       ) {
         return true;
       }

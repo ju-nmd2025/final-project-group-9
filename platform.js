@@ -7,7 +7,7 @@ export default class Platform {
   }
   draw() {
     push();
-    fill(0, 0, 102);
+    fill(211, 211, 211);
     rect(this.x, this.y, this.w, this.h);
     pop();
   }
