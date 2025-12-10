@@ -20,13 +20,17 @@ export default class Character {
   }
 
   isCollidingWithPlatforms(platforms) {
-    for (const platform of platforms) {
+    for (let i = 0; i < platforms.length; i++) {
       if (
-        this.x + this.w / 2 >= platform.x &&
-        this.x - this.w / 2 <= platform.x + platform.w &&
-        this.y + this.h / 2 <= platform.y - platform.h &&
-        this.y + this.h / 2 >= platform.y - platform.h - 10
+        this.x + this.w / 2 >= platforms[i].x &&
+        this.x - this.w / 2 <= platforms[i].x + platforms[i].w &&
+        this.y + this.h / 2 <= platforms[i].y - platforms[i].h &&
+        this.y + this.h / 2 >= platforms[i].y - platforms[i].h - 10
       ) {
+        if (platforms[i].type == "Breaking") {
+          platforms.splice(i, 1);
+          return false;
+        }
         return true;
       }
     }

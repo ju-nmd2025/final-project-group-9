@@ -1,9 +1,10 @@
 export default class Platform {
-  constructor(x, y, w, h) {
+  constructor(x, y, w, h, type) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+    this.type = type;
   }
   draw() {
     push();
@@ -17,19 +18,15 @@ export default class Platform {
 }
 
 function createPlatforms(n, standardWidth, standardHeight, standardSpace) {
-  let platforms = [new Platform(140, 200, 125, 10)];
+  let platforms = [new Platform(140, 200, 125, 10, generatePlatformType())];
   for (let i = 0; i < n; i++) {
-    let platformStartingPoint = generatePlatformStartingPoint(
-      platforms[i].x,
-      platforms[i].w,
-      standardSpace
-    );
     platforms.push(
-      new Platform(
-        platformStartingPoint,
-        standardHeight - Math.floor(120 * Math.random()),
-        standardWidth + Math.floor(90 * Math.random()),
-        10
+      generatePlatform(
+        platforms[i].x,
+        platforms[i].w,
+        standardSpace,
+        standardHeight,
+        standardWidth
       )
     );
   }
@@ -47,26 +44,53 @@ function automatePlatforms(
     platforms[i].draw();
     platforms[i].move(gameSpeed);
 
+    if (platforms.length < 5) {
+      platforms.push(
+        generatePlatform(
+          platforms[platforms.length - 1].x,
+          platforms[platforms.length - 1].w,
+          standardSpace,
+          standardHeight,
+          standardWidth
+        )
+      );
+    }
+
     if (platforms[i].x + platforms[i].w < 0) {
       platforms.splice(i, 1);
       platforms.push(
-        new Platform(
-          generatePlatformStartingPoint(
-            platforms[platforms.length - 1].x,
-            platforms[platforms.length - 1].w,
-            standardSpace
-          ),
-          standardHeight - Math.floor(120 * Math.random()),
-          standardWidth + Math.floor(90 * Math.random()),
-          10
+        generatePlatform(
+          platforms[platforms.length - 1].x,
+          platforms[platforms.length - 1].w,
+          standardSpace,
+          standardHeight,
+          standardWidth
         )
       );
     }
   }
 }
 
-function generatePlatformStartingPoint(x, w, defaultSpace) {
-  return x + w + defaultSpace - Math.floor(20 * Math.random());
+function generatePlatform(x, w, defaultSpace, standardHeight, standardWidth) {
+  let generatedX = x + w + defaultSpace - Math.floor(20 * Math.random());
+  let generatedY = standardHeight - Math.floor(120 * Math.random());
+  let generatedWidth = standardWidth + Math.floor(90 * Math.random());
+  return new Platform(
+    generatedX,
+    generatedY,
+    generatedWidth,
+    10,
+    generatePlatformType()
+  );
+}
+
+function generatePlatformType() {
+  let types = {
+    0: "Normal",
+    1: "Breaking",
+    2: "Moving",
+  };
+  return types[Math.floor(3 * Math.random())];
 }
 
 export { Platform, createPlatforms, automatePlatforms };
