@@ -1,7 +1,8 @@
 import Character from "./character";
-import { createPlatforms, automatePlatforms } from "./platform";
+import Platform from "./platform";
 import { automateSpikes } from "./spike";
 import Button from "./buttons";
+import MovingPlatform from "./movingPlatform";
 
 export default class GameHandler {
   states = {
@@ -27,7 +28,7 @@ export default class GameHandler {
   initializeGameObjects() {
     this.#character = new Character(50, 50, 50, 50);
 
-    this.#platforms = createPlatforms(4, 70, 220, 100);
+    this.#platforms = this.createPlatforms(4, 70, 220, 100);
 
     this.#spikes = createSpikes(2, 300);
   }
@@ -38,7 +39,7 @@ export default class GameHandler {
 
   startGame() {
     this.#character.draw();
-    automatePlatforms(this.#platforms, this.gameSpeed, 70, 220, 100);
+    this.automatePlatforms(this.#platforms, this.gameSpeed, 70, 220, 100);
     automateSpikes(this.#spikes, this.gameSpeed, 300);
     this.collidingWithObjects();
   }
@@ -70,5 +71,77 @@ export default class GameHandler {
     } else {
       this.#character.y -= 150;
     }
+  }
+
+  createPlatforms(n, maxWidth, maxHeight, maxSpace) {
+    let platforms = [new Platform(140, 200, 125, 10, false)];
+    for (let i = 0; i < n; i++) {
+      platforms.push(
+        this.generatePlatform(
+          platforms[i].x,
+          platforms[i].w,
+          maxSpace,
+          maxHeight,
+          maxWidth
+        )
+      );
+    }
+    return platforms;
+  }
+
+  automatePlatforms(platforms, gameSpeed, maxWidth, maxHeight, maxSpace) {
+    for (let i = 0; i < platforms.length; i++) {
+      platforms[i].draw();
+      platforms[i].move(gameSpeed);
+
+      if (platforms[i] instanceof MovingPlatform) {
+        platforms[i].movePlatformVertically(120, 220);
+      }
+
+      if (platforms.length < 5) {
+        platforms.push(
+          this.generatePlatform(
+            platforms[platforms.length - 1].x,
+            platforms[platforms.length - 1].w,
+            maxSpace,
+            maxHeight,
+            maxWidth
+          )
+        );
+      }
+
+      if (platforms[i].x + platforms[i].w < 0) {
+        platforms.splice(i, 1);
+        platforms.push(
+          this.generatePlatform(
+            platforms[platforms.length - 1].x,
+            platforms[platforms.length - 1].w,
+            maxSpace,
+            maxHeight,
+            maxWidth
+          )
+        );
+      }
+    }
+  }
+  generatePlatform(x, w, defaultSpace, maxHeight, maxWidth) {
+    let generatedX = x + w + defaultSpace - Math.floor(20 * Math.random());
+    let generatedY = maxHeight - Math.floor(120 * Math.random());
+    let generatedWidth = maxWidth + Math.floor(90 * Math.random());
+
+    const types = {
+      0: new Platform(generatedX, generatedY, generatedWidth, 10, false),
+      1: new Platform(generatedX, generatedY, generatedWidth, 10, true),
+      2: new MovingPlatform(
+        generatedX,
+        generatedY,
+        generatedWidth,
+        10,
+        false,
+        "Down"
+      ),
+    };
+
+    return types[Math.floor(3 * Math.random())];
   }
 }

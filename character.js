@@ -1,3 +1,5 @@
+import MovingPlatform from "./movingPlatform";
+
 export default class Character {
   constructor(x, y, w, h) {
     this.x = x;
@@ -27,7 +29,14 @@ export default class Character {
         this.y + this.h / 2 <= platforms[i].y - platforms[i].h &&
         this.y + this.h / 2 >= platforms[i].y - platforms[i].h - 10
       ) {
-        if (platforms[i].type == "Breaking") {
+        if (platforms[i] instanceof MovingPlatform) {
+          if (platforms[i].direction == "Up") {
+            this.y -= 2;
+          } else {
+            this.y += 2;
+          }
+        }
+        if (platforms[i].breakable) {
           platforms.splice(i, 1);
           return false;
         }
