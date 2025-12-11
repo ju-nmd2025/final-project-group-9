@@ -1,6 +1,6 @@
 import Character from "./character.js";
 import Platform from "./platform.js";
-import { automateSpikes } from "./spike.js";
+import { automateSpikes, createSpikes } from "./spike.js";
 import Button from "./buttons.js";
 import MovingPlatform from "./movingPlatform.js";
 
