@@ -21,15 +21,6 @@ export default class Spike {
   move(gameSpeed) {
     this.x -= gameSpeed;
   }
-  /*drawSpikes(spikes, gameSpeed, canvasWidth) {
-    for (let i = 0; i < spikes.length; i++) {
-      spikes[i].draw();
-      spikes[i].move(gameSpeed);
-
-      if (spikes[i].x1 + spikes[i].x3 < 0) {
-      }
-    }
-  }*/
 }
 
 function createSpikes(n, defaultSpace) {

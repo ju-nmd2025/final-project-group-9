@@ -65,7 +65,6 @@ export default class GameHandler {
   }
 
   characterJump() {
-    //ezt még ki kell majd csinositani, ha már fent tudunk maradni a platformokon
     if (this.#character.y - this.#character.h < 0) {
       this.#character.y = 0;
     } else {

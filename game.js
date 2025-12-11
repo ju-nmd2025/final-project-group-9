@@ -8,7 +8,6 @@ function setup() {
 
 function draw() {
   background(135, 216, 230);
-  line(0, 300, 700, 300);
   switch (handler.currentGameState) {
     case handler.states.menu:
       handler.mainMenu();
