@@ -1,4 +1,4 @@
-import GameHandler from "./gameHandler";
+import GameHandler from "./gameHandler.js";
 
 let handler = new GameHandler();
 
