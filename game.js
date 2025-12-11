@@ -8,6 +8,7 @@ function setup() {
 
 function draw() {
   background(135, 216, 230);
+  line(0, 300, 700, 300);
   switch (handler.currentGameState) {
     case handler.states.menu:
       handler.mainMenu();
@@ -45,3 +46,15 @@ function mousePressed() {
       console.error("An error has occured.");
   }
 }
+
+window.setup = setup;
+
+window.draw = draw;
+
+window.addEventListener("click", function (event) {
+  mousePressed();
+});
+
+window.addEventListener("keydown", function (event) {
+  keyPressed();
+});

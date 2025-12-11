@@ -1,8 +1,8 @@
-import Character from "./character";
-import Platform from "./platform";
-import { automateSpikes } from "./spike";
-import Button from "./buttons";
-import MovingPlatform from "./movingPlatform";
+import Character from "./character.js";
+import Platform from "./platform.js";
+import { automateSpikes } from "./spike.js";
+import Button from "./buttons.js";
+import MovingPlatform from "./movingPlatform.js";
 
 export default class GameHandler {
   states = {
@@ -144,3 +144,5 @@ export default class GameHandler {
     return types[Math.floor(3 * Math.random())];
   }
 }
+
+export { GameHandler };

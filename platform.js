@@ -16,3 +16,5 @@ export default class Platform {
     this.x -= speed;
   }
 }
+
+export { Platform };

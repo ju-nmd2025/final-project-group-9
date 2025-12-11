@@ -1,4 +1,4 @@
-import Platform from "./platform";
+import Platform from "./platform.js";
 
 export default class MovingPlatform extends Platform {
   constructor(x, y, w, h, breakable, direction) {
@@ -28,3 +28,5 @@ export default class MovingPlatform extends Platform {
     }
   }
 }
+
+export { MovingPlatform };

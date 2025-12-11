@@ -1,4 +1,4 @@
-import MovingPlatform from "./movingPlatform";
+import MovingPlatform from "./movingPlatform.js";
 
 export default class Character {
   constructor(x, y, w, h) {
@@ -59,3 +59,5 @@ export default class Character {
     return false;
   }
 }
+
+export { Character };
