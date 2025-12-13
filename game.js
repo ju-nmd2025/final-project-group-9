@@ -3,12 +3,11 @@ import GameHandler from "./gameHandler.js";
 let handler = new GameHandler();
 
 function setup() {
-  createCanvas(700, 400);
+  createCanvas(400, 700);
 }
 
 function draw() {
   background(135, 216, 230);
-  line(0, 300, 700, 300);
   switch (handler.currentGameState) {
     case handler.states.menu:
       handler.mainMenu();
@@ -29,6 +28,20 @@ function draw() {
 
 function keyPressed() {
   handler.characterJump();
+  if (handler.currentGameState === handler.states.start) {
+    switch (keyCode) {
+      case LEFT_ARROW:
+        handler.characterMove(-15);
+        break;
+      case RIGHT_ARROW:
+        handler.characterMove(15);
+        break;
+      default:
+        console.error(
+          "You pressed a wrong button! You can move the character with the Left and Right Arrow!"
+        );
+    }
+  }
 }
 function mousePressed() {
   switch (handler.currentGameState) {

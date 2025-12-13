@@ -57,10 +57,15 @@ export default class GameHandler {
   }
 
   characterJump() {
-    if (this.#character.y - this.#character.h < 0) {
-      this.#character.y = 0;
-    } else {
-      this.#character.y -= 150;
+    this.#character.jump(this.jumpHeight);
+  }
+  characterMove(amountToMove) {
+    this.#character.x += amountToMove;
+    if (this.#character.x + this.#character.w / 2 < 0) {
+      this.#character.x = 400;
+    }
+    if (this.#character.x - this.#character.w / 2 > 400) {
+      this.#character.x = 0;
     }
   }
 

@@ -7,6 +7,9 @@ export default class Character {
     this.w = w;
     this.h = h;
   }
+  jump(height) {
+    this.y -= height;
+  }
   draw() {
     push();
     fill(255, 204, 0);
@@ -45,9 +48,6 @@ export default class Character {
     }
     return false;
   }
-
-  
+}
 
 export { Character };
-
-
