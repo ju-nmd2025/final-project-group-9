@@ -11,22 +11,25 @@ export default class GameHandler {
   };
 
   buttons = {
-    startButton: new Button(250, 200, 200, 75, "Start Game"),
-    restartButton: new Button(250, 200, 200, 75, "Restart Game"),
+    startButton: new Button(100, 300, 200, 75, "Start Game"),
+    restartButton: new Button(100, 300, 200, 75, "Restart Game"),
   };
 
   constructor() {
     this.currentGameState = this.states.menu;
-    this.gameSpeed = 5;
+    this.maxWidth = 100;
+    this.maxSpace = 40;
+    this.numberOfPlatforms = 10;
+    this.jumpHeight = 150;
   }
 
   #character;
   #platforms = [];
 
   initializeGameObjects() {
-    this.#character = new Character(50, 50, 50, 50);
+    this.#character = new Character(200, 575, 50, 50);
 
-    this.#platforms = this.createPlatforms(4, 70, 220, 100);
+    this.#platforms = this.createPlatforms();
   }
 
   changeGameState(newGameState) {
@@ -35,8 +38,8 @@ export default class GameHandler {
 
   startGame() {
     this.#character.draw();
-    this.automatePlatforms(this.#platforms, this.gameSpeed, 70, 220, 100);
-    this.collidingWithObjects();
+    this.automatePlatforms(this.#platforms);
+    this.checkIfCharacterCollidesWithPlatform();
   }
 
   mainMenu() {
@@ -47,13 +50,7 @@ export default class GameHandler {
   endGame() {
     this.initializeGameObjects();
     this.buttons.restartButton.draw();
-    text("You died :(", 250, 110, 200, 75);
-  }
-
-  collidingWithObjects() {
-    if (!this.#character.isCollidingWithPlatforms(this.#platforms)) {
-      this.#character.fall();
-    }
+    text("You died :(", 100, 200, 200, 75);
   }
 
   characterJump() {
@@ -69,76 +66,95 @@ export default class GameHandler {
     }
   }
 
-  createPlatforms(n, maxWidth, maxHeight, maxSpace) {
-    let platforms = [new Platform(140, 200, 125, 10, false)];
-    for (let i = 0; i < n; i++) {
-      platforms.push(
-        this.generatePlatform(
-          platforms[i].x,
-          platforms[i].w,
-          maxSpace,
-          maxHeight,
-          maxWidth
-        )
-      );
+  createPlatforms() {
+    let platforms = [new Platform(175, 600, 50, 10, false, 0)];
+    for (let i = 0; i < this.numberOfPlatforms; i++) {
+      platforms.push(this.generatePlatform(platforms[i].y, platforms[i].h));
     }
     return platforms;
   }
 
-  automatePlatforms(platforms, gameSpeed, maxWidth, maxHeight, maxSpace) {
+  automatePlatforms(platforms) {
     for (let i = 0; i < platforms.length; i++) {
       platforms[i].draw();
-      platforms[i].move(gameSpeed);
+      platforms[i].move(3);
 
       if (platforms[i] instanceof MovingPlatform) {
-        platforms[i].movePlatformVertically(120, 220);
+        platforms[i].movePlatformHorizontally(100, 300);
       }
 
-      if (platforms.length < 5) {
+      if (platforms.length < this.numberOfPlatforms) {
         platforms.push(
           this.generatePlatform(
-            platforms[platforms.length - 1].x,
-            platforms[platforms.length - 1].w,
-            maxSpace,
-            maxHeight,
-            maxWidth
+            platforms[platforms.length - 1].y,
+            platforms[platforms.length - 1].h
           )
         );
       }
 
-      if (platforms[i].x + platforms[i].w < 0) {
+      if (platforms[i].y > 700) {
         platforms.splice(i, 1);
         platforms.push(
           this.generatePlatform(
-            platforms[platforms.length - 1].x,
-            platforms[platforms.length - 1].w,
-            maxSpace,
-            maxHeight,
-            maxWidth
+            platforms[platforms.length - 1].y,
+            platforms[platforms.length - 1].h
           )
         );
       }
     }
   }
-  generatePlatform(x, w, defaultSpace, maxHeight, maxWidth) {
-    let generatedX = x + w + defaultSpace - Math.floor(20 * Math.random());
-    let generatedY = maxHeight - Math.floor(120 * Math.random());
-    let generatedWidth = maxWidth + Math.floor(90 * Math.random());
+
+  checkIfCharacterCollidesWithPlatform() {
+    if (!this.isCollidingWithPlatforms(this.#platforms)) {
+      this.#character.fall();
+    } else {
+      this.characterJump(this.jumpHeight);
+    }
+    if (this.#character.y - this.#character.h / 2 > 700) {
+      this.changeGameState(this.states.end);
+    }
+  }
+
+  generatePlatform(y, h) {
+    let generatedX = Math.floor(300 * Math.random());
+    let generatedY = y - h - this.maxSpace - Math.floor(20 * Math.random());
+    let generatedWidth = this.maxWidth - Math.floor(20 * Math.random());
 
     const types = {
-      0: new Platform(generatedX, generatedY, generatedWidth, 10, false),
-      1: new Platform(generatedX, generatedY, generatedWidth, 10, true),
+      0: new Platform(generatedX, generatedY, generatedWidth, 10, false, 0),
+      1: new Platform(generatedX, generatedY, generatedWidth, 10, true, 0),
       2: new MovingPlatform(
         generatedX,
         generatedY,
         generatedWidth,
         10,
         false,
-        "Down"
+        0,
+        "Right"
       ),
     };
 
     return types[Math.floor(3 * Math.random())];
+  }
+
+  isCollidingWithPlatforms(platforms) {
+    for (let i = 0; i < platforms.length; i++) {
+      if (
+        this.#character.x + this.#character.w / 2 > platforms[i].x &&
+        this.#character.x - this.#character.w / 2 <
+          platforms[i].x + platforms[i].w &&
+        this.#character.y + this.#character.h / 2 <= platforms[i].y &&
+        this.#character.y + this.#character.h / 2 >= platforms[i].y - 5
+      ) {
+        if (platforms[i].breakPlatform()) {
+          platforms.splice(i, 1);
+          return false;
+        }
+        platforms[i].numberOfJumps++;
+        return true;
+      }
+    }
+    return false;
   }
 }
 

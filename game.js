@@ -4,6 +4,7 @@ let handler = new GameHandler();
 
 function setup() {
   createCanvas(400, 700);
+  createCanvas(400, 700);
 }
 
 function draw() {
@@ -27,7 +28,6 @@ function draw() {
 }
 
 function keyPressed() {
-  handler.characterJump();
   if (handler.currentGameState === handler.states.start) {
     switch (keyCode) {
       case LEFT_ARROW:

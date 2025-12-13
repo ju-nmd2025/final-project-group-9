@@ -1,25 +1,25 @@
 import Platform from "./platform.js";
 
 export default class MovingPlatform extends Platform {
-  constructor(x, y, w, h, breakable, direction) {
-    super(x, y, w, h, breakable);
+  constructor(x, y, w, h, breakable, numberOfJumps, direction) {
+    super(x, y, w, h, breakable, numberOfJumps);
     this.direction = direction;
   }
-  movePlatformVertically(upperThreshold, lowerThreshold) {
+  movePlatformHorizontally(leftThreshold, rightThreshold) {
     switch (this.direction) {
-      case "Up":
-        if (this.y - this.h >= upperThreshold) {
-          this.y -= 2;
+      case "Left":
+        if (this.x >= leftThreshold) {
+          this.x -= 3;
         } else {
-          this.direction = "Down";
+          this.direction = "Right";
         }
         break;
 
-      case "Down":
-        if (this.y <= lowerThreshold) {
-          this.y += 2;
+      case "Right":
+        if (this.x + this.w <= rightThreshold) {
+          this.x += 3;
         } else {
-          this.direction = "Up";
+          this.direction = "Left";
         }
         break;
 
