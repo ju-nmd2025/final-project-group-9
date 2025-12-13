@@ -46,18 +46,8 @@ export default class Character {
     return false;
   }
 
-  isHittingASpike(spikes) {
-    for (const spike of spikes) {
-      if (
-        this.x + this.w / 2 > spike.x &&
-        this.x - this.w / 2 < spike.x + spike.w &&
-        this.y + this.h / 2 > spike.y - spike.h
-      ) {
-        return true;
-      }
-    }
-    return false;
-  }
-}
+  
 
 export { Character };
+
+

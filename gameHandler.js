@@ -1,6 +1,5 @@
 import Character from "./character.js";
 import Platform from "./platform.js";
-import { automateSpikes, createSpikes } from "./spike.js";
 import Button from "./buttons.js";
 import MovingPlatform from "./movingPlatform.js";
 
@@ -23,14 +22,11 @@ export default class GameHandler {
 
   #character;
   #platforms = [];
-  #spikes = [];
 
   initializeGameObjects() {
     this.#character = new Character(50, 50, 50, 50);
 
     this.#platforms = this.createPlatforms(4, 70, 220, 100);
-
-    this.#spikes = createSpikes(2, 300);
   }
 
   changeGameState(newGameState) {
@@ -40,7 +36,6 @@ export default class GameHandler {
   startGame() {
     this.#character.draw();
     this.automatePlatforms(this.#platforms, this.gameSpeed, 70, 220, 100);
-    automateSpikes(this.#spikes, this.gameSpeed, 300);
     this.collidingWithObjects();
   }
 
@@ -56,9 +51,6 @@ export default class GameHandler {
   }
 
   collidingWithObjects() {
-    if (this.#character.isHittingASpike(this.#spikes)) {
-      this.changeGameState(this.states.end);
-    }
     if (!this.#character.isCollidingWithPlatforms(this.#platforms)) {
       this.#character.fall();
     }
