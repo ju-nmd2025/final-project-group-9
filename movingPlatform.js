@@ -9,7 +9,7 @@ export default class MovingPlatform extends Platform {
     switch (this.direction) {
       case "Left":
         if (this.x >= leftThreshold) {
-          this.x -= 3;
+          this.x -= 2;
         } else {
           this.direction = "Right";
         }
@@ -17,7 +17,7 @@ export default class MovingPlatform extends Platform {
 
       case "Right":
         if (this.x + this.w <= rightThreshold) {
-          this.x += 3;
+          this.x += 2;
         } else {
           this.direction = "Left";
         }

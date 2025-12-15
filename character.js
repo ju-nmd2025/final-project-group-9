@@ -17,7 +17,7 @@ export default class Character {
   }
 
   fall() {
-    this.y += 10;
+    this.y += 7;
   }
 }
 

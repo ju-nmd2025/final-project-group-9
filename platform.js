@@ -21,7 +21,7 @@ export default class Platform {
     this.y += speed;
   }
   breakPlatform() {
-    return this.breakable && this.numberOfJumps == 2;
+    return this.breakable && this.numberOfJumps === 2;
   }
 }
 
