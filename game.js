@@ -1,42 +1,72 @@
-import { character } from "./character";
-import platform from "platform";
+import GameHandler from "./gameHandler.js";
+
+let handler = new GameHandler();
 
 function setup() {
-    createCanvas(400, 400);
+  createCanvas(400, 700);
 }
-
-// Obstacle / Spike / Death
-function drawObstacle() {
-    push();
-    fill("red");
-    triangle(180, 300, 210, 240, 240, 300);
-    pop();
-}
-
-let x = 100;
-let y = 100;
 
 function draw() {
-    background(100, 100, 100);
+  background(135, 216, 230);
+  switch (handler.currentGameState) {
+    case handler.states.menu:
+      handler.mainMenu();
+      break;
 
-    character.draw();
-	platform.draw();
+    case handler.states.start:
+      handler.startGame();
+      break;
 
-    platform.x -= 10;
-    if(platform.x + platform.w < 0){
-        platform.x = 500;
-    }
+    case handler.states.end:
+      handler.endGame();
+      break;
 
-    if(character.y + character.h < 300){
-        character.y += 10;
-    }
-
-    // Floor
-    line(0, 300, 400, 300);
+    default:
+      console.error("An error has occured.");
+  }
 }
 
-function keyPressed(){
-    if(character.y + character.h === 300){
-        character.y -= 80;
+function keyPressed() {
+  if (handler.currentGameState === handler.states.start) {
+    switch (keyCode) {
+      case LEFT_ARROW:
+        handler.characterMove(-20);
+        break;
+      case RIGHT_ARROW:
+        handler.characterMove(20);
+        break;
+      default:
+        console.error(
+          "You pressed a wrong button! You can move the character with the Left and Right Arrow!"
+        );
     }
+  }
 }
+function mousePressed() {
+  switch (handler.currentGameState) {
+    case handler.states.menu:
+      if (handler.buttons.startButton.isMouseOnButton()) {
+        handler.changeGameState(handler.states.start);
+      }
+      break;
+    case handler.states.end:
+      if (handler.buttons.restartButton.isMouseOnButton()) {
+        handler.changeGameState(handler.states.menu);
+      }
+      break;
+    default:
+      console.error("An error has occured.");
+  }
+}
+
+window.setup = setup;
+
+window.draw = draw;
+
+window.addEventListener("click", function (event) {
+  mousePressed();
+});
+
+window.addEventListener("keydown", function (event) {
+  keyPressed();
+});
